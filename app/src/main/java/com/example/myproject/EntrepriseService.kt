@@ -10,6 +10,8 @@ import com.example.myproject.data.RechercheDAO
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, rechercheDao:RechercheDAO) {
 
@@ -22,6 +24,13 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
     val rechercheDao=rechercheDao
 
     fun getEntreprise(q: String): List<Entreprise>{
+
+        var DateMtn= SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        if(rechercheDao.getRechercheDate(q,DateMtn)!=null){
+            var listBdd=getBdd(q,DateMtn)
+            println("ici")
+            return listBdd
+        }
 
 
         val url= URL(String.format(queryUrl,q))
@@ -38,14 +47,12 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
             }
             val inputStream = conn.inputStream?: return emptyList()
             val reader = JsonReader(inputStream.bufferedReader())
+            var DateMtn= SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
             var recherche=Recherche()
             recherche.libelle=q
-
             //on insert et recup l'id de la recherche
             var idRecherche= rechercheDao.insert(recherche)
-
-
             reader.beginObject()
             while (reader.hasNext()){
                 var next=reader.nextName()
@@ -62,7 +69,6 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
                                     "nom_raison_sociale"->entreprise.libelle = reader.nextString().toString()
                                     else->reader.skipValue()
                             }
-
                         }
                         //on insert et recup l'id de l'entreprise
                         var idEntreprise = entrepriseDao.insert(entreprise)
@@ -91,4 +97,11 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
             conn?.disconnect()
         }
     }
+
+
+    fun getBdd(q:String,Date:String):List<Entreprise>{
+        var list=rechercheDao.getByDate(q,Date)
+        return list
+    }
+
 }

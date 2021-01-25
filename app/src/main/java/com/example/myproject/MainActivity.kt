@@ -3,12 +3,15 @@ package com.example.myproject
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import com.example.myproject.classes.Entreprise
 import com.example.myproject.data.EntrepriseDAO
 import com.example.myproject.data.LienDAO
 import com.example.myproject.data.RechercheDAO
 import kotlinx.android.synthetic.main.activity_main.*
+import android.widget.ListView
+import android.widget.ProgressBar
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +38,11 @@ class MainActivity : AppCompatActivity() {
             return true
         }
 
+        override fun onPreExecute() {
+
+        }
         override fun onPostExecute(result: Boolean?) {
+
             if ((result != null) && result) {
                 listEntreprise.adapter = ArrayAdapter<Entreprise>(
                     this@MainActivity,
