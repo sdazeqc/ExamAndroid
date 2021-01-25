@@ -6,6 +6,9 @@ import com.example.myproject.classes.*
 @Dao
 interface EntrepriseDAO {
 
+    @Query("SELECT * FROM entreprise where siret=:siret")
+    fun getBySiret(siret:String): Entreprise?
+
     @Query("SELECT count(*) FROM entreprise ")
     fun count(): Int
 

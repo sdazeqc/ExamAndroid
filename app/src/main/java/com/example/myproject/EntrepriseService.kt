@@ -19,21 +19,41 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
 
     private val apiUrl="https://entreprise.data.gouv.fr"
     private val queryUrl="$apiUrl/api/sirene/v1/full_text/%s"
+    private val queryUrlCP="$apiUrl/api/sirene/v1/full_text/%s?code_postal=%s"
+    private val queryUrlDepartement="$apiUrl/api/sirene/v1/full_text/%s?departement=%s"
     val entrepriseDao=entrepriseDao
     val lienDao=lienDao
     val rechercheDao=rechercheDao
 
-    fun getEntreprise(q: String): List<Entreprise>{
+    fun getEntreprise(q: String,departement:String?="",cp:String?=""): List<Entreprise>{
+
+
+
+
+        val url:URL
+        if(cp?.length!! >0){
+             url= URL(String.format(queryUrlCP,q,cp))
+            println("tata")
+
+        }
+        else if(departement?.length!! > 0){
+             url= URL(String.format(queryUrlDepartement,q,departement))
+            println("titi")
+        }
+        else{
+             url= URL(String.format(queryUrl,q))
+            println("toto")
+        }
+
 
         var DateMtn= SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-        if(rechercheDao.getRechercheDate(q,DateMtn)!=null){
-            var listBdd=getBdd(q,DateMtn)
-            println("ici")
+        if(rechercheDao.getRechercheDate(url.toString(),DateMtn)!=null){
+            var listBdd=getBdd(url.toString(),DateMtn)
+            println("tutu")
             return listBdd
         }
 
 
-        val url= URL(String.format(queryUrl,q))
         var conn: HttpURLConnection?=null
 
         var list = mutableListOf<Entreprise>()
@@ -51,6 +71,7 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
 
             var recherche=Recherche()
             recherche.libelle=q
+            recherche.url=url.toString()
             //on insert et recup l'id de la recherche
             var idRecherche= rechercheDao.insert(recherche)
             reader.beginObject()
@@ -71,10 +92,26 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
                             }
                         }
                         //on insert et recup l'id de l'entreprise
-                        var idEntreprise = entrepriseDao.insert(entreprise)
+                        var old = entrepriseDao.getBySiret(entreprise.siret.toString())
+
+                        var idEntreprise:Long?=null
+
+                        if(old!=null){
+                            idEntreprise = old.id
+
+                            old.libelle=entreprise.libelle
+                            old.adresse=entreprise.adresse
+                            old.activite=entreprise.activite
+                            old.departement=entreprise.departement
+
+                            entrepriseDao.update(old)
+                        }
+                        else{
+                             idEntreprise = entrepriseDao.insert(entreprise)
+                        }
 
                         //rajout de tout les liens
-                        var lien= Lien(idEntreprise,idRecherche)
+                        var lien= Lien(idEntreprise!!,idRecherche)
                         lienDao.insert(lien)
 
                         list.add(entreprise)
@@ -99,8 +136,8 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
     }
 
 
-    fun getBdd(q:String,Date:String):List<Entreprise>{
-        var list=rechercheDao.getByDate(q,Date)
+    fun getBdd(url:String,Date:String):List<Entreprise>{
+        var list=rechercheDao.getByDate(url,Date)
         return list
     }
 

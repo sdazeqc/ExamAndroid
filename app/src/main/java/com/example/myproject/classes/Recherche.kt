@@ -15,7 +15,8 @@ data class Recherche (@PrimaryKey(autoGenerate = true) var id: Long?=null,
                     var libelle: String="",
                     var departement:Int?=null,
                     var codePostal:Int?=null,
-                    var date:String=DateMtn
+                    var date:String=DateMtn,
+                      var url:String?=""
                    ): Serializable
 {
 
