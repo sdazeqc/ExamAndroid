@@ -11,12 +11,11 @@ import java.util.*
 var DateMtn= SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
 @Entity
-data class MotCle (@PrimaryKey(autoGenerate = true) var id: Long?=null,
-                    var libelle: String,
+data class Recherche (@PrimaryKey(autoGenerate = true) var id: Long?=null,
+                    var libelle: String="",
                     var departement:Int?=null,
                     var codePostal:Int?=null,
-                    var date:String=DateMtn,
-                    var json:String?=null
+                    var date:String=DateMtn
                    ): Serializable
 {
 

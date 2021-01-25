@@ -2,10 +2,10 @@ package com.example.myproject.data
 
 import androidx.room.*
 import com.example.myproject.classes.Lien
-import com.example.myproject.classes.MotCle
+import com.example.myproject.classes.Recherche
 
 @Dao
-interface LienDOA {
+interface LienDAO {
 
     @Query("SELECT count(*) FROM lien ")
     fun count(): Int

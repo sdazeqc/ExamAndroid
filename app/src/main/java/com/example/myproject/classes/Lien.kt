@@ -16,15 +16,16 @@ import java.time.LocalDate
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity = MotCle::class,
+            entity = Recherche::class,
             parentColumns = ["id"],
             childColumns = ["search"],
             onDelete = ForeignKey.CASCADE
-        )]
+        )],
+    primaryKeys = ["company", "search"]
 )
-data class Lien(@PrimaryKey(autoGenerate = false) var company:Long,
-                 var search:Long): Serializable
-//@PrimaryKey(autoGenerate = false)
+
+data class Lien( var company:Long,
+                 var search:Long):Serializable
 {
 
 }

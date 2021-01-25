@@ -6,11 +6,18 @@ import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
 
 import com.example.myproject.classes.*
+import com.example.myproject.data.EntrepriseDAO
+import com.example.myproject.data.LienDAO
+import com.example.myproject.data.RechercheDAO
 
 
-@Database(version = 1, entities = [MotCle::class, Entreprise::class, Lien::class])
+@Database(version = 1, entities = [Recherche::class, Entreprise::class, Lien::class])
 
 abstract class TodoDataBase: RoomDatabase() {
+
+    abstract fun entrepriseDAO(): EntrepriseDAO
+    abstract fun lienDAO(): LienDAO
+    abstract fun rechercheDAO(): RechercheDAO
 
     companion object {
         var INSTANCE: TodoDataBase? = null

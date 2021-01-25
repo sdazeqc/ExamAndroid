@@ -16,6 +16,6 @@ data class Entreprise (@PrimaryKey(autoGenerate = true) var id: Long?=null,
 {
 
     override fun toString(): String {
-        return libelle +" ici , "+adresse
+        return libelle +", "+adresse
     }
 }

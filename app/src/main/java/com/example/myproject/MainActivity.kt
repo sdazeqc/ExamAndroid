@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import com.example.myproject.classes.Entreprise
+import com.example.myproject.data.EntrepriseDAO
+import com.example.myproject.data.LienDAO
+import com.example.myproject.data.RechercheDAO
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -12,14 +15,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var db = TodoDataBase.getDatabase(this)
+        var entrepriseDao = db.entrepriseDAO()
+        var lienDao = db.lienDAO()
+        var rechercheDao = db.rechercheDAO()
+
         button.setOnClickListener{
-            QueryLocationEntreprise().execute()
+            QueryLocationEntreprise(entrepriseDao,lienDao,rechercheDao).execute()
         }
     }
 
-    inner class QueryLocationEntreprise(): AsyncTask<Void, Void, Boolean>() {
+    inner class QueryLocationEntreprise(entrepriseDao:EntrepriseDAO,lienDao:LienDAO,rechercheDao:RechercheDAO): AsyncTask<Void, Void, Boolean>() {
         var list = emptyList<Entreprise>()
-        var entr = EntrepriseService()
+        var entr = EntrepriseService(entrepriseDao,lienDao,rechercheDao)
 
         override fun doInBackground(vararg params: Void?): Boolean {
             list=entr.getEntreprise(ETEntreprise.text.toString())
