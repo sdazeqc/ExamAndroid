@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MyProject</string>
+    <string name="oldRecherche">ancienne recherche</string>
+    <string name="curRecherche">recherche en cours</string>
 </resources>

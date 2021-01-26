@@ -1,8 +1,11 @@
 package com.example.myproject
 
+import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import com.example.myproject.classes.Entreprise
@@ -10,8 +13,6 @@ import com.example.myproject.data.EntrepriseDAO
 import com.example.myproject.data.LienDAO
 import com.example.myproject.data.RechercheDAO
 import kotlinx.android.synthetic.main.activity_main.*
-import android.widget.ListView
-import android.widget.ProgressBar
 import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
@@ -44,6 +45,13 @@ class MainActivity : AppCompatActivity() {
             floatingActionButton5.visibility=View.VISIBLE
             floatingActionButton6.visibility=View.INVISIBLE
             editTextNumber.text.clear()
+        }
+
+        listEntreprise.setOnItemClickListener { _, _, position, _ ->
+            val entreprise = listEntreprise.adapter.getItem(position) as Entreprise
+            val intent = Intent(this, EntrepriseActivity::class.java)
+            intent.putExtra("location", entreprise)
+            startActivity(intent)
         }
     }
 
@@ -84,5 +92,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.recherche_menu,menu)
+        return true
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val db = TodoDataBase.getDatabase(this)
+        val taskDAO = db.entrepriseDAO()
+
+        when(item.itemId){
+            R.id.menu_task_checkall -> {
+                val intent = Intent(this, HistoryActivity::class.java)
+                intent.putExtra("value", "old")
+                startActivity(intent)
+            }
+
+            R.id.menu_task_uncheckall -> {
+                val intent = Intent(this, HistoryActivity::class.java)
+                intent.putExtra("value", "current")
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

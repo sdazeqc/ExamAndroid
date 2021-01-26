@@ -1,6 +1,7 @@
 package com.example.myproject
 
 import android.util.JsonReader
+import android.util.JsonToken
 import com.example.myproject.classes.Entreprise
 import com.example.myproject.classes.Lien
 import com.example.myproject.classes.Recherche
@@ -26,9 +27,6 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
     val rechercheDao=rechercheDao
 
     fun getEntreprise(q: String,departement:String?="",cp:String?=""): List<Entreprise>{
-
-
-
 
         val url:URL
         if(cp?.length!! >0){
@@ -82,12 +80,43 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
                     while(reader.hasNext()){
                         reader.beginObject()
                         while (reader.hasNext()){
+
                             when(reader.nextName()){
-                                    "libelle_activite_principale"->entreprise.activite = reader.nextString().toString()
-                                    "geo_adresse"->entreprise.adresse = reader.nextString().toString()
-                                    "departement"-> entreprise.departement = reader.nextString().toString()
-                                    "siret"->entreprise.siret = reader.nextString().toString()
-                                    "nom_raison_sociale"->entreprise.libelle = reader.nextString().toString()
+                                    "libelle_activite_principale"->{
+                                        if (reader.peek() == JsonToken.NULL)  {
+                                            entreprise.activite = reader.nextNull().toString()
+                                        }else{
+                                            entreprise.activite = reader.nextString()
+                                        }
+                                    }
+                                    "geo_adresse"->{
+                                        if (reader.peek() == JsonToken.NULL)  {
+                                            entreprise.adresse = reader.nextNull().toString()
+                                        }else{
+                                            entreprise.adresse = reader.nextString()
+                                        }
+                                    }
+                                    "departement"-> {
+                                        if (reader.peek() == JsonToken.NULL)  {
+                                            entreprise.departement = reader.nextNull().toString()
+                                        }else{
+                                            entreprise.departement = reader.nextString()
+                                        }
+                                    }
+                                    "siret"->{
+                                        if (reader.peek() == JsonToken.NULL)  {
+                                            entreprise.siret = reader.nextNull().toString()
+                                        }else{
+                                            entreprise.siret = reader.nextString()
+                                        }
+                                    }
+                                    "nom_raison_sociale"->{
+                                        if (reader.peek() == JsonToken.NULL)  {
+                                            entreprise.libelle = reader.nextNull().toString()
+                                        }else{
+                                            entreprise.libelle = reader.nextString()
+                                        }
+                                    }
                                     else->reader.skipValue()
                             }
                         }
