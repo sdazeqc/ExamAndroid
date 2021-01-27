@@ -13,6 +13,8 @@ interface RechercheDAO {
     fun getByOld(date:String): List<Recherche>
 
 
+    @Query("SELECT * FROM recherche WHERE id=:id")
+    fun getById(id:Int): Recherche?
 
 
     @Query("SELECT entreprise.* FROM recherche,lien,entreprise WHERE recherche.url=:url and recherche.id=lien.search and lien.company=entreprise.id and recherche.date=:date")

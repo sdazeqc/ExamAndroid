@@ -1,5 +1,6 @@
 package com.example.myproject
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,27 @@ class HistoryActivity: AppCompatActivity() {
                         android.R.layout.simple_dropdown_item_1line,
                         rechercheDao.getByOld(DateMtn)
                 )
+            }
+        }
+
+        listRecherche.setOnItemClickListener { _, _, position, _ ->
+            val recherche = listRecherche.adapter.getItem(position) as Recherche
+            when(value) {
+                "current" -> {
+                    listresult.adapter = ArrayAdapter<Entreprise>(
+                            this@HistoryActivity,
+                            android.R.layout.simple_dropdown_item_1line,
+                            lienDao.getByRecherche(recherche.id?.toInt()!!)
+                    )
+                }
+                "old" -> {
+                    //depuis la bdd
+                    listresult.adapter = ArrayAdapter<Entreprise>(
+                            this@HistoryActivity,
+                            android.R.layout.simple_dropdown_item_1line,
+                            lienDao.getByRecherche(recherche.id?.toInt()!!)
+                    )
+                }
             }
         }
 

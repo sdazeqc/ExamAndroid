@@ -19,5 +19,7 @@ data class Recherche (@PrimaryKey(autoGenerate = true) var id: Long?=null,
                       var url:String?=""
                    ): Serializable
 {
-
+    override fun toString(): String {
+        return "nom = "+ libelle+" departement = "+ departement +" cp = "+codePostal
+    }
 }

@@ -14,8 +14,14 @@ import com.example.myproject.data.LienDAO
 import com.example.myproject.data.RechercheDAO
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.Toast
+import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
+
+
+    private val saveIdRecherche = "idrecherche"
+    private val SaveIdRecherche = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -24,6 +30,31 @@ class MainActivity : AppCompatActivity() {
         var entrepriseDao = db.entrepriseDAO()
         var lienDao = db.lienDAO()
         var rechercheDao = db.rechercheDAO()
+
+
+        if(savedInstanceState!=null && savedInstanceState.containsKey(SaveIdRecherche)){
+
+            val rId=savedInstanceState.getLong(SaveIdRecherche)
+            var saveRecherche = rechercheDao.getById(rId.toInt())
+            if(saveRecherche!=null){
+                if(saveRecherche.codePostal.toString()!="kotlin.unix"){
+                    editTextNumber.setText(saveRecherche.codePostal.toString())
+                    textView2.visibility=View.VISIBLE
+                    editTextNumber.visibility=View.VISIBLE
+                    floatingActionButton5.visibility=View.INVISIBLE
+                    floatingActionButton6.visibility=View.VISIBLE
+                }
+                if(saveRecherche.departement.toString()!="kotlin.unix"){
+                    editTextNumber.setText(saveRecherche.departement.toString())
+                    textView2.visibility=View.VISIBLE
+                    editTextNumber.visibility=View.VISIBLE
+                    floatingActionButton5.visibility=View.INVISIBLE
+                    floatingActionButton6.visibility=View.VISIBLE
+                }
+                ETEntreprise.setText(saveRecherche.libelle)
+
+            }
+        }
 
         button.setOnClickListener{
             if((!editTextNumber.text.toString().isBlank() and !ETEntreprise.text.toString().isBlank()) or !ETEntreprise.text.toString().isBlank()){
@@ -55,6 +86,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(SaveIdRecherche, saveIdRecherche)
+    }
+
+
+
     inner class QueryLocationEntreprise(entrepriseDao:EntrepriseDAO,lienDao:LienDAO,rechercheDao:RechercheDAO): AsyncTask<Void, Void, Boolean>() {
         var list = emptyList<Entreprise>()
         var entr = EntrepriseService(entrepriseDao,lienDao,rechercheDao)
@@ -80,9 +119,10 @@ class MainActivity : AppCompatActivity() {
 
         override fun onPreExecute() {
             listEntreprise.setAdapter(null);
+            queryProgressBar.visibility = View.VISIBLE
         }
         override fun onPostExecute(result: Boolean?) {
-
+            queryProgressBar.visibility = View.INVISIBLE
             if ((result != null) && result) {
                 listEntreprise.adapter = ArrayAdapter<Entreprise>(
                     this@MainActivity,

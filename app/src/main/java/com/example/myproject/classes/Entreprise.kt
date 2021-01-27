@@ -11,7 +11,9 @@ data class Entreprise (@PrimaryKey(autoGenerate = true) var id: Long?=null,
                    var activite:String?="",
                    var adresse: String?="",
                        var departement:String?="",
-                       var siret:String?=""
+                       var siret:String?="",
+                       var longitude:String?="",
+                       var latitude:String?=""
 ): Serializable
 {
 

@@ -69,6 +69,8 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
 
             var recherche=Recherche()
             recherche.libelle=q
+            recherche.codePostal=cp?.toInt()
+            recherche.departement=departement?.toInt()
             recherche.url=url.toString()
             //on insert et recup l'id de la recherche
             var idRecherche= rechercheDao.insert(recherche)
@@ -115,6 +117,20 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
                                             entreprise.libelle = reader.nextNull().toString()
                                         }else{
                                             entreprise.libelle = reader.nextString()
+                                        }
+                                    }
+                                    "longitude"->{
+                                        if (reader.peek() == JsonToken.NULL)  {
+                                            entreprise.longitude = reader.nextNull().toString()
+                                        }else{
+                                            entreprise.longitude = reader.nextString()
+                                        }
+                                    }
+                                    "latitude"->{
+                                        if (reader.peek() == JsonToken.NULL)  {
+                                            entreprise.latitude = reader.nextNull().toString()
+                                        }else{
+                                            entreprise.latitude = reader.nextString()
                                         }
                                     }
                                     else->reader.skipValue()
