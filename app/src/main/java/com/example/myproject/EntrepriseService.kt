@@ -51,6 +51,18 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
             return listBdd
         }
 
+        var recherche=Recherche()
+        recherche.libelle=q
+        if(cp!=""){
+            recherche.codePostal=cp?.toInt()
+        }
+        if(departement!=""){
+            recherche.departement=departement?.toInt()
+        }
+        recherche.url=url.toString()
+        //on insert et recup l'id de la recherche
+        var idRecherche= rechercheDao.insert(recherche)
+
 
         var conn: HttpURLConnection?=null
 
@@ -67,13 +79,7 @@ class EntrepriseService(entrepriseDao:EntrepriseDAO, lienDao: LienDAO, recherche
             val reader = JsonReader(inputStream.bufferedReader())
             var DateMtn= SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
-            var recherche=Recherche()
-            recherche.libelle=q
-            recherche.codePostal=cp?.toInt()
-            recherche.departement=departement?.toInt()
-            recherche.url=url.toString()
-            //on insert et recup l'id de la recherche
-            var idRecherche= rechercheDao.insert(recherche)
+
             reader.beginObject()
             while (reader.hasNext()){
                 var next=reader.nextName()

@@ -2,22 +2,22 @@ package com.example.myproject
 
 import android.content.Intent
 import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.myproject.classes.code_NAF_APE
 import com.example.myproject.classes.Entreprise
 import com.example.myproject.data.EntrepriseDAO
 import com.example.myproject.data.LienDAO
 import com.example.myproject.data.RechercheDAO
 import kotlinx.android.synthetic.main.activity_main.*
-import android.widget.Toast
-import java.util.ArrayList
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
-
 
     private val saveIdRecherche = "idrecherche"
     private val SaveIdRecherche = null
@@ -27,10 +27,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         var db = TodoDataBase.getDatabase(this)
+        db.seed()
         var entrepriseDao = db.entrepriseDAO()
         var lienDao = db.lienDAO()
         var rechercheDao = db.rechercheDAO()
+        var nafDAO = db.nafDAO()
 
+        
 
         if(savedInstanceState!=null && savedInstanceState.containsKey(SaveIdRecherche)){
 
@@ -52,9 +55,17 @@ class MainActivity : AppCompatActivity() {
                     floatingActionButton6.visibility=View.VISIBLE
                 }
                 ETEntreprise.setText(saveRecherche.libelle)
-
             }
         }
+
+
+
+        val categories= nafDAO.getAll()
+        val dataAdapter = ArrayAdapter<code_NAF_APE>(this, android.R.layout.simple_spinner_item, categories!!)
+
+        spinner.setAdapter(dataAdapter);
+
+
 
         button.setOnClickListener{
             if((!editTextNumber.text.toString().isBlank() and !ETEntreprise.text.toString().isBlank()) or !ETEntreprise.text.toString().isBlank()){
@@ -69,12 +80,14 @@ class MainActivity : AppCompatActivity() {
             editTextNumber.visibility=View.VISIBLE
             floatingActionButton5.visibility=View.INVISIBLE
             floatingActionButton6.visibility=View.VISIBLE
+            spinner.visibility=View.VISIBLE
         }
         floatingActionButton6.setOnClickListener {
             textView2.visibility=View.GONE
             editTextNumber.visibility=View.GONE
             floatingActionButton5.visibility=View.VISIBLE
             floatingActionButton6.visibility=View.INVISIBLE
+            spinner.visibility=View.GONE
             editTextNumber.text.clear()
         }
 
@@ -85,7 +98,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -130,6 +142,7 @@ class MainActivity : AppCompatActivity() {
                     list
                 )
             }
+
         }
 
     }
