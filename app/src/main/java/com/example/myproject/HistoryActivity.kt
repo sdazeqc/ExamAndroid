@@ -2,6 +2,7 @@ package com.example.myproject
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myproject.classes.Entreprise
@@ -25,18 +26,49 @@ class HistoryActivity: AppCompatActivity() {
 
         when(value){
             "current"->{
-                listRecherche.adapter = ArrayAdapter<Recherche>(
-                        this@HistoryActivity,
-                        android.R.layout.simple_dropdown_item_1line,
-                        rechercheDao.getByCurrent(DateMtn)
-                )
+                var list = rechercheDao.getByCurrent(DateMtn)
+                if(list.size>0){
+                    textView11.visibility= View.INVISIBLE
+                    listRecherche.visibility= View.VISIBLE
+                    textView8.visibility= View.VISIBLE
+                    listresult.visibility= View.VISIBLE
+                    listRecherche.adapter = ArrayAdapter<Recherche>(
+                            this@HistoryActivity,
+                            android.R.layout.simple_dropdown_item_1line,
+                            list
+                    )
+                }
+                else{
+                    textView11.setText("Aucune donnée a affiché")
+                    textView11.visibility= View.VISIBLE
+                    listRecherche.visibility= View.GONE
+                    textView8.visibility= View.GONE
+                    listresult.visibility= View.GONE
+                }
+
+
             }
             "old"->{
-                listRecherche.adapter = ArrayAdapter<Recherche>(
-                        this@HistoryActivity,
-                        android.R.layout.simple_dropdown_item_1line,
-                        rechercheDao.getByOld(DateMtn)
-                )
+                var list = rechercheDao.getByOld(DateMtn)
+                if(list.size>0){
+                    textView11.visibility= View.INVISIBLE
+                    listRecherche.visibility= View.VISIBLE
+                    textView8.visibility= View.VISIBLE
+                    listresult.visibility= View.VISIBLE
+                    listRecherche.adapter = ArrayAdapter<Recherche>(
+                            this@HistoryActivity,
+                            android.R.layout.simple_dropdown_item_1line,
+                            list
+                    )
+                }
+                else{
+                    textView11.setText("Aucune donnée a affiché")
+                    textView11.visibility= View.VISIBLE
+                    listRecherche.visibility= View.GONE
+                    textView8.visibility= View.GONE
+                    listresult.visibility= View.GONE
+                }
+
             }
         }
 

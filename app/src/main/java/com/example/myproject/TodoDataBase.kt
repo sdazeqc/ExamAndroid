@@ -1,6 +1,7 @@
 package com.example.myproject
 
 import android.content.Context
+import android.provider.SyncStateContract.Helpers.insert
 import androidx.room.Database
 import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
@@ -23,7 +24,21 @@ abstract class TodoDataBase: RoomDatabase() {
     abstract fun nafDAO(): NafDAO
 
     fun seed(){
+        var recherche=Recherche()
+        recherche.libelle="ici"
+        recherche.codePostal=null
+        recherche.departement=null
+        recherche.url="tsdfqsdfqsdf"
+        recherche.date="2020-10-26"
+        rechercheDAO().insert(recherche)
 
+        var recherche2=Recherche()
+        recherche.libelle="ici"
+        recherche.codePostal=null
+        recherche.departement=null
+        recherche.url="tsdfqsdfqsdf"
+        recherche.date="2020-12-26"
+        rechercheDAO().insert(recherche2)
     }
 
     companion object {

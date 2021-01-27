@@ -28,4 +28,14 @@
         android:id="@+id/listresult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_weight="1"
+        android:text="TextView"
+        android:textSize="24sp"
+        android:visibility="invisible" />
 </LinearLayout>

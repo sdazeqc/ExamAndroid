@@ -15,6 +15,7 @@ import com.example.myproject.data.EntrepriseDAO
 import com.example.myproject.data.LienDAO
 import com.example.myproject.data.RechercheDAO
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -33,8 +34,45 @@ class MainActivity : AppCompatActivity() {
         var rechercheDao = db.rechercheDAO()
         var nafDAO = db.nafDAO()
 
-        
+        var listSearch=rechercheDao.getALL()
+        //traitement de tout les liens
+        var nbOld:Int =0
+        listSearch.forEach {
 
+            var sdf = SimpleDateFormat("yyyy-MM-dd")
+            val c=Calendar.getInstance()
+            var datenowcompar = sdf.parse(it.date)
+
+            c.add(Calendar.MONTH,-3);
+            var datepasse=c.getTime()
+            var datepast = sdf.format(datepasse)
+            var datepastcompar = sdf.parse(datepast)
+            println(datepastcompar)
+            println(datenowcompar)
+            if(datepastcompar>datenowcompar){
+                nbOld=nbOld+1
+                println("ici")
+                var obj=lienDao.getLinkCompany(it.id?.toInt()!!)
+                rechercheDao.delete(it)
+                if(obj!=null){
+                    var id=obj.company.toInt()
+                    println("ici")
+                    if(lienDao.getAllLinkCompany(id)?.size!!>1){
+                        lienDao.deletById(it.id?.toInt()!!)
+
+                    }
+                    else{
+                        lienDao.deletById(it.id?.toInt()!!)
+                        entrepriseDao.deletById(id)
+                    }
+                }
+
+            }
+
+        }
+        if(nbOld>=1){
+            Toast.makeText(this, "Aucune recherche plus vieille de 3 mois", Toast.LENGTH_SHORT).show()
+        }
         if(savedInstanceState!=null && savedInstanceState.containsKey(SaveIdRecherche)){
 
             val rId=savedInstanceState.getLong(SaveIdRecherche)
@@ -136,11 +174,20 @@ class MainActivity : AppCompatActivity() {
         override fun onPostExecute(result: Boolean?) {
             queryProgressBar.visibility = View.INVISIBLE
             if ((result != null) && result) {
-                listEntreprise.adapter = ArrayAdapter<Entreprise>(
-                    this@MainActivity,
-                    android.R.layout.simple_dropdown_item_1line,
-                    list
-                )
+                if(list.size>0){
+                    textView10.visibility=View.INVISIBLE
+                    listEntreprise.visibility=View.VISIBLE
+                    listEntreprise.adapter = ArrayAdapter<Entreprise>(
+                            this@MainActivity,
+                            android.R.layout.simple_dropdown_item_1line,
+                            list
+                    )
+                }
+                else{
+                    textView10.setText("Aucune donnée a affiché")
+                    textView10.visibility=View.VISIBLE
+                    listEntreprise.visibility=View.INVISIBLE
+                }
             }
 
         }

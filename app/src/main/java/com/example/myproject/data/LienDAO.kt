@@ -27,4 +27,14 @@ interface LienDAO {
 
     @Delete
     fun delete(lien: Lien)
+
+    @Query("DELETE FROM lien WHERE lien.search=:recherche ")
+    fun deletById(recherche:Int)
+
+    @Query("SELECT * FROM lien where lien.company=:recherche")
+    fun getAllLinkCompany(recherche:Int): List<Lien>?
+
+    @Query("SELECT * FROM lien where lien.search=:recherche")
+    fun getLinkCompany(recherche:Int): Lien
+
 }

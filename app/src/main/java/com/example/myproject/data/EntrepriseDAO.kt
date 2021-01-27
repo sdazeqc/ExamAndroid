@@ -26,4 +26,7 @@ interface EntrepriseDAO {
 
     @Delete
     fun delete(entreprise: Entreprise)
+
+    @Query("DELETE FROM entreprise WHERE entreprise.id=:recherche ")
+    fun deletById(recherche:Int)
 }
