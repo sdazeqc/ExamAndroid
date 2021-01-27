@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         var db = TodoDataBase.getDatabase(this)
-        db.seed()
+        //db.seed()
         var entrepriseDao = db.entrepriseDAO()
         var lienDao = db.lienDAO()
         var rechercheDao = db.rechercheDAO()

@@ -9,13 +9,11 @@ interface RechercheDAO {
     @Query("SELECT * FROM recherche WHERE recherche.date=:date")
     fun getByCurrent(date:String): List<Recherche>
 
-    @Query("SELECT * FROM recherche WHERE recherche.date not in (:date)")
+    @Query("SELECT * FROM recherche WHERE recherche.date<>:date")
     fun getByOld(date:String): List<Recherche>
-
 
     @Query("SELECT * FROM recherche WHERE id=:id")
     fun getById(id:Int): Recherche?
-
 
     @Query("SELECT entreprise.* FROM recherche,lien,entreprise WHERE recherche.url=:url and recherche.id=lien.search and lien.company=entreprise.id and recherche.date=:date")
     fun getByDate(url:String?="", date:String): List<Entreprise>

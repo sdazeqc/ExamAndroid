@@ -23,10 +23,10 @@ class HistoryActivity: AppCompatActivity() {
         var lienDao = db.lienDAO()
         var rechercheDao = db.rechercheDAO()
         var DateMtn= SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-
+        var list:List<Recherche>
         when(value){
             "current"->{
-                var list = rechercheDao.getByCurrent(DateMtn)
+                 list = rechercheDao.getByCurrent(DateMtn)
                 if(list.size>0){
                     textView11.visibility= View.INVISIBLE
                     listRecherche.visibility= View.VISIBLE
@@ -45,11 +45,10 @@ class HistoryActivity: AppCompatActivity() {
                     textView8.visibility= View.GONE
                     listresult.visibility= View.GONE
                 }
-
-
             }
             "old"->{
-                var list = rechercheDao.getByOld(DateMtn)
+                list = rechercheDao.getByOld(DateMtn)
+                println(list)
                 if(list.size>0){
                     textView11.visibility= View.INVISIBLE
                     listRecherche.visibility= View.VISIBLE
