@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         var listSearch=rechercheDao.getALL()
         //traitement de tout les liens
         var nbOld:Int =0
+        //suppression 3mois +
         listSearch.forEach {
 
             var sdf = SimpleDateFormat("yyyy-MM-dd")
@@ -66,13 +67,14 @@ class MainActivity : AppCompatActivity() {
                         entrepriseDao.deletById(id)
                     }
                 }
-
             }
 
         }
         if(nbOld>=1){
             Toast.makeText(this, "Aucune recherche plus vieille de 3 mois", Toast.LENGTH_SHORT).show()
         }
+
+        //remettre le textes dans les champs
         if(savedInstanceState!=null && savedInstanceState.containsKey(SaveIdRecherche)){
 
             val rId=savedInstanceState.getLong(SaveIdRecherche)

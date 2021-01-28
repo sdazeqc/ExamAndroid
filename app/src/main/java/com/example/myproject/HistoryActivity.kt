@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myproject.classes.Entreprise
 import com.example.myproject.classes.Recherche
@@ -75,21 +76,41 @@ class HistoryActivity: AppCompatActivity() {
             val recherche = listRecherche.adapter.getItem(position) as Recherche
             when(value) {
                 "current" -> {
-                    listresult.adapter = ArrayAdapter<Entreprise>(
-                            this@HistoryActivity,
-                            android.R.layout.simple_dropdown_item_1line,
-                            lienDao.getByRecherche(recherche.id?.toInt()!!)
-                    )
+                    var list = lienDao.getByRecherche(recherche.id?.toInt()!!)
+                    if(list.size>0){
+                        listresult.adapter = ArrayAdapter<Entreprise>(
+                                this@HistoryActivity,
+                                android.R.layout.simple_dropdown_item_1line,
+                                list
+                        )
+                    }else{
+                        listresult.setAdapter(null);
+                        Toast.makeText(this, "Aucune entreprise", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 "old" -> {
                     //depuis la bdd
-                    listresult.adapter = ArrayAdapter<Entreprise>(
-                            this@HistoryActivity,
-                            android.R.layout.simple_dropdown_item_1line,
-                            lienDao.getByRecherche(recherche.id?.toInt()!!)
-                    )
+
+                    var list = lienDao.getByRecherche(recherche.id?.toInt()!!)
+                    if(list.size>0){
+                        listresult.adapter = ArrayAdapter<Entreprise>(
+                                this@HistoryActivity,
+                                android.R.layout.simple_dropdown_item_1line,
+                                lienDao.getByRecherche(recherche.id?.toInt()!!)
+                        )
+                    }else{
+                        listresult.setAdapter(null);
+                        Toast.makeText(this, "Aucune entreprise", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
+        }
+
+        listresult.setOnItemClickListener { _, _, position, _ ->
+            val entreprise = listresult.adapter.getItem(position) as Entreprise
+            val intent = Intent(this@HistoryActivity, EntrepriseActivity::class.java)
+            intent.putExtra("location", entreprise)
+            startActivity(intent)
         }
 
     }
