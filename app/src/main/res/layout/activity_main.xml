@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton5"
+        android:id="@+id/btnDown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -16,7 +16,7 @@
         android:src="@android:drawable/arrow_down_float" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton6"
+        android:id="@+id/btnUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -35,7 +35,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/txtEntreprise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Entreprise" />
@@ -49,7 +49,7 @@
                 android:inputType="textPersonName" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btnSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -70,7 +70,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/txtOther"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -78,7 +78,7 @@
                 android:visibility="gone" />
 
             <EditText
-                android:id="@+id/editTextNumber"
+                android:id="@+id/ETOther"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -93,7 +93,7 @@
             android:orientation="horizontal">
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/SCNaf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -109,14 +109,14 @@
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/queryProgressBar"
+        android:id="@+id/QuerySearch"
         android:layout_centerInParent="true"
         android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/txtVide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

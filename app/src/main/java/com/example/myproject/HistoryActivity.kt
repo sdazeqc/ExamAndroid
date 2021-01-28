@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.myproject.classes.Entreprise
 import com.example.myproject.classes.Recherche
 import kotlinx.android.synthetic.main.activity_history.*
-import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,7 +28,7 @@ class HistoryActivity: AppCompatActivity() {
             "current"->{
                  list = rechercheDao.getByCurrent(DateMtn)
                 if(list.size>0){
-                    textView11.visibility= View.INVISIBLE
+                    txtVideHistory.visibility= View.INVISIBLE
                     listRecherche.visibility= View.VISIBLE
                     textView8.visibility= View.VISIBLE
                     listresult.visibility= View.VISIBLE
@@ -40,8 +39,8 @@ class HistoryActivity: AppCompatActivity() {
                     )
                 }
                 else{
-                    textView11.setText("Aucune donnée a affiché")
-                    textView11.visibility= View.VISIBLE
+                    txtVideHistory.setText("Aucune donnée a affiché")
+                    txtVideHistory.visibility= View.VISIBLE
                     listRecherche.visibility= View.GONE
                     textView8.visibility= View.GONE
                     listresult.visibility= View.GONE
@@ -51,7 +50,7 @@ class HistoryActivity: AppCompatActivity() {
                 list = rechercheDao.getByOld(DateMtn)
                 println(list)
                 if(list.size>0){
-                    textView11.visibility= View.INVISIBLE
+                    txtVideHistory.visibility= View.INVISIBLE
                     listRecherche.visibility= View.VISIBLE
                     textView8.visibility= View.VISIBLE
                     listresult.visibility= View.VISIBLE
@@ -62,8 +61,8 @@ class HistoryActivity: AppCompatActivity() {
                     )
                 }
                 else{
-                    textView11.setText("Aucune donnée a affiché")
-                    textView11.visibility= View.VISIBLE
+                    txtVideHistory.setText("Aucune donnée a affiché")
+                    txtVideHistory.visibility= View.VISIBLE
                     listRecherche.visibility= View.GONE
                     textView8.visibility= View.GONE
                     listresult.visibility= View.GONE

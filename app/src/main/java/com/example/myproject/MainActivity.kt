@@ -27,12 +27,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val prefs = getPreferences(MODE_PRIVATE)
+
+        val textSearch = prefs.getString("Entreprise", "")
+        val OtherSearch = prefs.getString("Other", "")
+
+        ETEntreprise.setText(textSearch)
+        ETOther.setText(OtherSearch)
+
+
         var db = TodoDataBase.getDatabase(this)
         //db.seed()
         var entrepriseDao = db.entrepriseDAO()
         var lienDao = db.lienDAO()
         var rechercheDao = db.rechercheDAO()
         var nafDAO = db.nafDAO()
+
+        var nafbdd = CodeNafDatabase.getDatabase(this)
+        //var nafDAO = nafbdd.NafapeDao()
+
 
         var listSearch=rechercheDao.getALL()
         //traitement de tout les liens
@@ -81,18 +94,18 @@ class MainActivity : AppCompatActivity() {
             var saveRecherche = rechercheDao.getById(rId.toInt())
             if(saveRecherche!=null){
                 if(saveRecherche.codePostal.toString()!="kotlin.unix"){
-                    editTextNumber.setText(saveRecherche.codePostal.toString())
-                    textView2.visibility=View.VISIBLE
-                    editTextNumber.visibility=View.VISIBLE
-                    floatingActionButton5.visibility=View.INVISIBLE
-                    floatingActionButton6.visibility=View.VISIBLE
+                    ETOther.setText(saveRecherche.codePostal.toString())
+                    txtOther.visibility=View.VISIBLE
+                    ETOther.visibility=View.VISIBLE
+                    btnDown.visibility=View.INVISIBLE
+                    btnUp.visibility=View.VISIBLE
                 }
                 if(saveRecherche.departement.toString()!="kotlin.unix"){
-                    editTextNumber.setText(saveRecherche.departement.toString())
-                    textView2.visibility=View.VISIBLE
-                    editTextNumber.visibility=View.VISIBLE
-                    floatingActionButton5.visibility=View.INVISIBLE
-                    floatingActionButton6.visibility=View.VISIBLE
+                    ETOther.setText(saveRecherche.departement.toString())
+                    txtOther.visibility=View.VISIBLE
+                    ETOther.visibility=View.VISIBLE
+                    btnDown.visibility=View.INVISIBLE
+                    btnUp.visibility=View.VISIBLE
                 }
                 ETEntreprise.setText(saveRecherche.libelle)
             }
@@ -103,32 +116,40 @@ class MainActivity : AppCompatActivity() {
         val categories= nafDAO.getAll()
         val dataAdapter = ArrayAdapter<code_NAF_APE>(this, android.R.layout.simple_spinner_item, categories!!)
 
-        spinner.setAdapter(dataAdapter);
+        SCNaf.setAdapter(dataAdapter);
 
 
 
-        button.setOnClickListener{
-            if((!editTextNumber.text.toString().isBlank() and !ETEntreprise.text.toString().isBlank()) or !ETEntreprise.text.toString().isBlank()){
+        btnSearch.setOnClickListener{
+            if((!ETOther.text.toString().isBlank() and !ETEntreprise.text.toString().isBlank()) or !ETEntreprise.text.toString().isBlank()){
                 QueryLocationEntreprise(entrepriseDao,lienDao,rechercheDao).execute()
+
+                val prefs = getPreferences(MODE_PRIVATE)
+                val editor = prefs.edit()
+
+                editor.putString("Entreprise", ETEntreprise.text.toString())
+                editor.putString("Other", ETOther.text.toString())
+
+                editor.commit()
             }
             else {
                 Toast.makeText(this, "Le champ n'est pas rempli", Toast.LENGTH_SHORT).show()
             }
         }
-        floatingActionButton5.setOnClickListener{
-            textView2.visibility=View.VISIBLE
-            editTextNumber.visibility=View.VISIBLE
-            floatingActionButton5.visibility=View.INVISIBLE
-            floatingActionButton6.visibility=View.VISIBLE
-            spinner.visibility=View.VISIBLE
+        btnDown.setOnClickListener{
+            txtOther.visibility=View.VISIBLE
+            ETOther.visibility=View.VISIBLE
+            btnDown.visibility=View.INVISIBLE
+            btnUp.visibility=View.VISIBLE
+            SCNaf.visibility=View.VISIBLE
         }
-        floatingActionButton6.setOnClickListener {
-            textView2.visibility=View.GONE
-            editTextNumber.visibility=View.GONE
-            floatingActionButton5.visibility=View.VISIBLE
-            floatingActionButton6.visibility=View.INVISIBLE
-            spinner.visibility=View.GONE
-            editTextNumber.text.clear()
+        btnUp.setOnClickListener {
+            txtOther.visibility=View.GONE
+            ETOther.visibility=View.GONE
+            btnDown.visibility=View.VISIBLE
+            btnUp.visibility=View.INVISIBLE
+            SCNaf.visibility=View.GONE
+            ETOther.text.clear()
         }
 
         listEntreprise.setOnItemClickListener { _, _, position, _ ->
@@ -151,12 +172,12 @@ class MainActivity : AppCompatActivity() {
         var entr = EntrepriseService(entrepriseDao,lienDao,rechercheDao)
 
         override fun doInBackground(vararg params: Void?): Boolean {
-            if(!editTextNumber.text.toString().isBlank() and !ETEntreprise.text.toString().isBlank()){
-                if(editTextNumber.text.toString().length==2){
-                    list=entr.getEntreprise(ETEntreprise.text.toString(),editTextNumber.text.toString())
+            if(!ETOther.text.toString().isBlank() and !ETEntreprise.text.toString().isBlank()){
+                if(ETOther.text.toString().length==2){
+                    list=entr.getEntreprise(ETEntreprise.text.toString(),ETOther.text.toString())
                 }
                 else{
-                    list=entr.getEntreprise(ETEntreprise.text.toString(),"",editTextNumber.text.toString())
+                    list=entr.getEntreprise(ETEntreprise.text.toString(),"",ETOther.text.toString())
                 }
 
             }
@@ -171,13 +192,13 @@ class MainActivity : AppCompatActivity() {
 
         override fun onPreExecute() {
             listEntreprise.setAdapter(null);
-            queryProgressBar.visibility = View.VISIBLE
+            QuerySearch.visibility = View.VISIBLE
         }
         override fun onPostExecute(result: Boolean?) {
-            queryProgressBar.visibility = View.INVISIBLE
+            QuerySearch.visibility = View.INVISIBLE
             if ((result != null) && result) {
                 if(list.size>0){
-                    textView10.visibility=View.INVISIBLE
+                    txtVide.visibility=View.INVISIBLE
                     listEntreprise.visibility=View.VISIBLE
                     listEntreprise.adapter = ArrayAdapter<Entreprise>(
                             this@MainActivity,
@@ -186,8 +207,8 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
                 else{
-                    textView10.setText("Aucune donnée a affiché")
-                    textView10.visibility=View.VISIBLE
+                    txtVide.setText("Aucune donnée a affiché")
+                    txtVide.visibility=View.VISIBLE
                     listEntreprise.visibility=View.INVISIBLE
                 }
             }
