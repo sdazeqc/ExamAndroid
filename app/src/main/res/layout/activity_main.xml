@@ -38,7 +38,7 @@
                 android:id="@+id/txtEntreprise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Entreprise" />
+                android:text="@string/entreprise" />
 
             <EditText
                 android:id="@+id/ETEntreprise"
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:text="@string/search" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floatingActionButton4"
@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Autre"
+                android:text="@string/other"
                 android:visibility="gone" />
 
             <EditText
@@ -121,7 +121,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_weight="1"
-        android:text="TextView"
+        android:text="@string/vide"
         android:textSize="24sp"
         android:visibility="invisible" />
 </RelativeLayout>

@@ -43,8 +43,6 @@ class MainActivity : AppCompatActivity() {
         var rechercheDao = db.rechercheDAO()
         var nafDAO = db.nafDAO()
 
-        var nafbdd = CodeNafDatabase.getDatabase(this)
-        //var nafDAO = nafbdd.NafapeDao()
 
 
         var listSearch=rechercheDao.getALL()
@@ -114,6 +112,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val categories= nafDAO.getAll()
+        println(categories)
         val dataAdapter = ArrayAdapter<code_NAF_APE>(this, android.R.layout.simple_spinner_item, categories!!)
 
         SCNaf.setAdapter(dataAdapter);
@@ -207,7 +206,6 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
                 else{
-                    txtVide.setText("Aucune donnée a affiché")
                     txtVide.visibility=View.VISIBLE
                     listEntreprise.visibility=View.INVISIBLE
                 }
