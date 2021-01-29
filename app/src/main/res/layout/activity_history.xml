@@ -9,7 +9,7 @@
         android:id="@+id/txtHistoryList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Liste de recherche :" />
+        android:text="Liste des recherches :" />
 
     <ListView
         android:id="@+id/listRecherche"
@@ -22,7 +22,7 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Listes résultat" />
+        android:text="Liste des résultats" />
 
     <ListView
         android:id="@+id/listresult"

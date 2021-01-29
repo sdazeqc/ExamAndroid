@@ -20,6 +20,12 @@ data class Recherche (@PrimaryKey(autoGenerate = true) var id: Long?=null,
                    ): Serializable
 {
     override fun toString(): String {
-        return "nom = "+ libelle+" departement = "+ departement +" cp = "+codePostal
+        if(departement!=null){
+            return "nom = "+ libelle+" departement = "+ departement+" date="+date
+        }
+        if(codePostal!=null){
+            return "nom = "+ libelle+" cp = "+codePostal+" date="+date
+        }
+        return "nom = "+ libelle +" date="+date
     }
 }

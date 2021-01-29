@@ -4,6 +4,6 @@
     <string name="curRecherche">recherche en cours</string>
     <string name="search">recherche</string>
     <string name="entreprise">Entreprise</string>
-    <string name="other">Other</string>
+    <string name="other">Autres</string>
     <string name="vide">Aucune donnée a affiché</string>
 </resources>
